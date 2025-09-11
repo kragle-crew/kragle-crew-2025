@@ -1,4 +1,4 @@
-# Kragle Krew 2025
+# Kragle Crew 2025
 
 ## How to load these files onto a Spike Prime core
 
@@ -35,7 +35,7 @@ pip install -r requirements.txt
 Load the python code via [pybricksdev](https://github.com/pybricks/pybricksdev).
 
 ```shell
-pybricksdev run ble example.py 
+pybricksdev run ble example.py
 ```
 
 ### Via VSCode
@@ -44,4 +44,4 @@ pybricksdev run ble example.py
 
 ## Load multiple programs
 
-example: https://github.com/pybricks/support/issues/861
+example: <https://github.com/pybricks/support/issues/861>
