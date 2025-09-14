@@ -5,7 +5,10 @@ from menu import menu
 print("starting up")
 hub.speaker.beep(frequency=500, duration=200)
 
+print(f"battery voltage {hub.battery.voltage()}mV")
+print(f"battery current {hub.battery.current()}mA")
 print("entering menu loop")
+
 
 while True:
     print("presenting menu")

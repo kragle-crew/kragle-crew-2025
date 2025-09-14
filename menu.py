@@ -11,13 +11,16 @@ menu_option_keys = list(menu_options.keys())
 
 
 def menu():
-    def navigate(direction):
+    menu_index = 0
+
+    def navigate(direction, old_index):
         print(f"navigating {direction}")
-        menu_index = (menu_index - direction) % len(menu_option_keys)
+        return (old_index - direction) % len(menu_option_keys)
 
     print("Starting menu")
+    print(f"menu options: {menu_option_keys}")
+    
     hub.system.set_stop_button(None)
-    menu_index = 0
     print("beginning menu loop")
     while True:
         print(f"current menu selection: {menu_option_keys[menu_index]}")
@@ -43,6 +46,6 @@ def menu():
             )
 
         elif Button.LEFT in pressed:
-            navigate(1)
+            menu_index = navigate(1, menu_index)
         elif Button.RIGHT in pressed:
-            navigate(-1)
+            menu_index = navigate(-1, menu_index)
