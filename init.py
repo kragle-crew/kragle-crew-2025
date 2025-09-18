@@ -6,5 +6,5 @@ from pybricks.parameters import Port, Direction
 hub = PrimeHub()
 left_motor = Motor(Port.E, Direction.COUNTERCLOCKWISE)
 right_motor = Motor(Port.F, Direction.CLOCKWISE)
-robot = DriveBase(left_motor, right_motor, 49, 100)
+robot = DriveBase(left_motor, right_motor, 45, 79)
 print("init complete")

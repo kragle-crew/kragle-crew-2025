@@ -2,4 +2,5 @@ from init import robot
 
 
 async def task():
-    await robot.turn(360)
+    
+    await robot.curve(200,-180)
