@@ -1,9 +1,12 @@
-from init import robot
+from init import robot, lift
+from utilities.lift import reset_lift, lift_to_height
 
 
 async def task():
-    await drawN()
-    await drawJ()
+    await lift_to_height(950)
+    await reset_lift()
+    # await drawN()
+    # await drawJ()
     # robot.settings(straight_speed=280)
     # sideLength=300
     # while sideLength>10:

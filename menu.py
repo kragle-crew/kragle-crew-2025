@@ -11,8 +11,8 @@ menu_options = {"A": a, "B": b, "C": c, "D": d}
 menu_option_keys = list(menu_options.keys())
 
 
-def menu():
-    menu_index = 0
+def menu(starting_selection="A"):
+    menu_index = menu_option_keys.index(starting_selection)
 
     def navigate(direction, old_index):
         print(f"navigating {direction}")
@@ -47,6 +47,6 @@ def menu():
             )
 
         elif Button.LEFT in pressed:
-            menu_index = navigate(1, menu_index)
-        elif Button.RIGHT in pressed:
             menu_index = navigate(-1, menu_index)
+        elif Button.RIGHT in pressed:
+            menu_index = navigate(1, menu_index)
