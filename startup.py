@@ -8,6 +8,7 @@ hub.speaker.beep(frequency=500, duration=200)
 
 print(f"battery voltage {hub.battery.voltage()}mV")
 print(f"battery current {hub.battery.current()}mA")
+print(f"hub info {hub.system.info()}")
 print("entering menu loop")
 
 option="A"
