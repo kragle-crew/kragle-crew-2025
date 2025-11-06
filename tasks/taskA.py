@@ -1,6 +1,8 @@
-from init import robot,lift,pressure
+from init import robot,lift,pressure,colorRight,colorLeft
 from utilities.lift import reset_lift, lift_to_height
-from pybricks.tools import multitask
+from pybricks.tools import multitask,wait
+from pybricks.parameters import Color   
+
 
 
 # async def square():
@@ -18,7 +20,13 @@ from pybricks.tools import multitask
 #     await robot.turn(-90)
 
 async def doChallenge1():
-    robot.settings(straight_speed=200)
+    robot.settings(straight_speed=200,turn_rate=90)
+    robot.drive(100,0)
+
+    while await colorRight.color() != Color.RED:
+        print(await colorRight.color())
+
+    robot.brake()
     
     # await lift.run_angle(360,360)
     await multitask(
@@ -29,14 +37,17 @@ async def doChallenge1():
     # await robot .straight(200)
     await robot.curve(400,57)
     await robot.turn (-140)
-    await robot .straight(120)
-    await lift_to_height(850)
+    await multitask(
+        await lift_to_height(800),
+        robot.straight(120)
+    )   
     await robot .straight(70)
-    await robot.turn (30)
+    await robot.turn (35)
     await robot.turn (-60)
     await robot.turn (30)
     await robot.straight (-60)
     await reset_lift()
+    
 
 async def liftGoDown():
     await lift.run_target (400,0)
