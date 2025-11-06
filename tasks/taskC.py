@@ -14,11 +14,15 @@ async def task():
       robot.straight(290), 
       lift_to_height(98)
       )
-    await robot.turn(-90)
-    await robot.straight(128)
+    await robot.turn(-98)
+    await robot.straight(150)
     await robot.curve(-140, 140)
-    await robot.turn(-106)
-    await robot.straight(58)
-    await robot.turn(90)
-    await robot.straight(82)
-    await robot.turn(-2)
+    await robot.straight(-128)
+    
+    
+    
+    # await robot.turn(-106)
+    # await robot.straight(58)
+    # await robot.turn(90)
+    # await robot.straight(90)
+    # await robot.turn(-2)
