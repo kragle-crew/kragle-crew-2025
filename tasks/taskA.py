@@ -23,17 +23,17 @@ async def doChallenge1():
     robot.settings(straight_speed=200,turn_rate=90)
     robot.drive(100,0)
 
-    while await colorRight.color() != Color.RED:
+    while await colorRight.color() != Color.YELLOW:
         print(await colorRight.color())
 
     robot.brake()
     
     # await lift.run_angle(360,360)
     await multitask(
-        reset_lift(),
-        robot.straight(200)
+      reset_lift(),
+      robot.straight(200)
     )
-    # await reset_lift()
+        # await reset_lift()
     # await robot .straight(200)
     await robot.curve(400,57)
     await robot.turn (-140)
