@@ -38,17 +38,21 @@ async def doChallenge1():
     await robot.curve(400,57)
     await robot.turn (-140)
     await multitask(
-        await lift_to_height(800),
+        lift_to_height(700),
         robot.straight(120)
     )   
-    await robot .straight(70)
+    await robot.straight(67)
     await robot.turn (35)
     await robot.turn (-60)
     await robot.turn (30)
-    await robot.straight (-60)
+    await robot.straight (-70)
     await reset_lift()
+    await robot.turn(150)
+    await robot.straight (480)
+    await robot.turn (-80)
+    await lift_to_height(2000)
+    #await robot.straight(20)
     
-
 async def liftGoDown():
     await lift.run_target (400,0)
 async def task():
