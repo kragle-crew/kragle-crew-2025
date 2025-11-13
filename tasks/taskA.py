@@ -60,5 +60,6 @@ async def task():
     await doChallenge1()
 
 async def drive2():
-    await robot.curve(350,-15)
+    await robot.curve(355,-15)
+    await robot.straight(200)
     
