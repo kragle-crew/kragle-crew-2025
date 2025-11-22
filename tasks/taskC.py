@@ -18,23 +18,29 @@ async def task():
     
     robot.settings(straight_speed=328)
     await robot.turn(-45)
+
     await multitask(
-      robot.straight(328), 
-      lift_to_height(98)
-      )
+    robot.straight(328), 
+    lift_to_height(108)
+    )
+    # Dinnertime Lever
+    robot.settings(straight_speed=328)
     await robot.turn(-98)
-    await lift_to_height(100)
-    await robot.straight(133)
-    await robot.curve(-140, 140)
+    await lift_to_height(108)
+    await robot.straight(122)
+    await robot.curve(-140, 135)
+    # table setter
     await robot.straight(-165)
     await robot.straight(28)
-    await robot.turn(42)
+    await robot.turn(45)
     await reset_lift()
     robot.settings(straight_speed=250)
-    await robot.straight(450)
+    await robot.straight(428)
     robot.settings(straight_speed=313)
     await robot.straight(-100)
     await robot.turn(-50)
+    await robot.turn(-8)
+    await robot.straight(279)
   
     # await robot.straight(58)
     # await robot.turn(90)
