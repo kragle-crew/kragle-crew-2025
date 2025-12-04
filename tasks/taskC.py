@@ -15,7 +15,7 @@ async def task():
       lift_to_height(98)
       )
     await robot.turn(-98)
-    await robot.straight(150)
+    await robot.straight(10)
     await robot.curve(-140, 140)
     await robot.straight(-128)
     

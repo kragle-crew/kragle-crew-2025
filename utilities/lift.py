@@ -3,7 +3,7 @@ from init import lift, pressure
 lift_speed=600
 async def reset_lift():
     lift.run(lift_speed)
-    while not await pressure.pressed():
+    while not await pressure.pressed(force=.5):
       pass
     print("button pressed. stopping lift")
     lift.stop()

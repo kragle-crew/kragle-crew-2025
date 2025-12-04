@@ -1,6 +1,12 @@
-from init import robot, lift
-from utilities.lift import reset_lift, lift_to_height
 
+from init import robot,lift,pressure,colorRight,colorLeft
+from utilities.lift import reset_lift, lift_to_height
+from pybricks.tools import multitask,wait
+from pybricks.parameters import Color   
+async def doChallenge1():
+   
+  await lift_to_height(1000)
+  await reset_lift()
 
 async def task():
     await lift_to_height(950)

@@ -1,31 +1,48 @@
-from init import robot
+from init import robot,lift,pressure,colorRight,colorLeft
+from utilities.lift import reset_lift, lift_to_height
+from pybricks.tools import multitask,wait
+from pybricks.parameters import Color 
+
+async def doChallenge1():
+    
+    robot.settings(straight_speed=200,turn_rate=90)
+    robot.drive(100,0)
+
+    while await colorRight.color() != Color.RED:
+        print(await colorRight.color())
+
+    robot.brake()
+    
+    # await lift.run_angle(360,360)
+    await multitask(
+        reset_lift(),
+        lift_to_height(100)
+    )
+    await robot.curve(270,174)
+    await robot.turn(30)
+    await robot.turn(-20)
+    await robot.straight(-70)
+    await robot.curve(-80,240)
+    await robot.turn(155)
+    await lift_to_height(50)
+    await robot.straight(200)
+    await robot.straight(-150)
+    await robot.turn(-45)
+    await robot.straight(430)
+    await robot.turn(40)
+    await lift_to_height(230)
+    await robot.straight(175)
+    await reset_lift()
+    await robot.turn(60)
+
+
+   
+                                                        
+    #await robot.turn(-45)
+    #await lift_to_height(0)
+    #await robot.straight(-200)
 
 
 async def task():
-
-    robot.settings(straight_speed=535)
-    for value in range(0,2):
-      await robot.curve(250, 360) 
-      await robot.straight(125)
-      await robot.turn (-90) 
-      await robot.straight(250)
-      await robot.turn (-90) 
-      await robot.straight(250)
-      await robot.turn (-90) 
-      await robot.straight(250)
-      await robot.turn (-90) 
-      await robot.straight(125)
-    # await robot.straight(100)
-    # await robot.turn (90)
-    # await robot.straight(100)
-    # await robot.turn (90)
-    # await robot.straight(100)
-    # radius = 280/3
-    # angle = 180
-    # for var in range(0, 2):
-    #   await robot.curve(radius, angle * -1)
-    #   await robot.curve(radius, angle)
-    #   await robot.curve(radius, angle)
-    #   await robot.curve(radius, angle * -1)
-    # await robot.curve(200,-180)
-    
+    #await robot.turn(360)
+    await doChallenge1()
