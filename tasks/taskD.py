@@ -1,48 +1,51 @@
-
 from init import robot,lift,pressure,colorRight,colorLeft
 from utilities.lift import reset_lift, lift_to_height
 from pybricks.tools import multitask,wait
 from pybricks.parameters import Color   
-async def doChallenge1():
-   
-  await lift_to_height(1000)
-  await reset_lift()
+
 
 async def task():
-    await lift_to_height(950)
+    robot.settings(straight_speed=200,turn_rate=90)
+    robot.drive(100,0)
+    while await colorRight.color() != Color.YELLOW:
+      print(await colorRight.color())
+
+    robot.brake()
+    
+    robot.settings(straight_speed=328)
     await reset_lift()
-    # await drawN()
-    # await drawJ()
-    # robot.settings(straight_speed=280)
-    # sideLength=300
-    # while sideLength>10:
-    # await square(sideLength)
-    # sideLength=sideLength/2
-    # for value in range(0, 20):
-    # await robot.curve(100, 360)
-    # await robot.curve(100, -360)
-    # print(value)
-    # await robot.straight(382.28)
+    await robot.straight(300)
+    # Rock Fall
+    robot.settings(straight_speed=350)
+    await robot.turn(-40)
+    #await lift_to_height(108)
+    await robot.straight(360)
+    #robot.settings(straight_acceleration=383)
+    #await robot.curve(-140, 135)
+    await robot.turn(75)
+    await robot.straight(150)
+    await robot.turn(35)
+    await robot.turn(-35)
+    await robot.straight(-100)
+    await robot.turn(-90)
+    await multitask(lift_to_height(2100),robot.straight(200))
+    await robot.turn(-80)
+    await robot.straight(120)
+    await lift_to_height(1500)
+    await robot.turn(50)
+    await robot.straight(310)
+    await robot.turn(-85)
+    await robot.straight(450)
+    await robot.turn(80)
+    await robot.straight(1700)
 
 
-async def drawN():
-    #print(sideLength)
-    #for value in range(0, 4):
-        #await robot.straight(sideLength)
-        #await robot.turn(90)
-  await robot.straight(228)
-  await robot.turn(135)
-  await robot.straight(322.44)
-  await robot.turn(-45)
-  await robot.straight(228)
-  await robot.turn(90)
-  
-  
-async def drawJ():
-  await robot.straight(20)
-  await robot.straight(200)
-  await robot.turn(180)
-  await robot.straight(100)
-  await robot.turn(-90)
-  await robot.straight(200)
-  await robot.curve(100,180)
+
+
+
+
+
+
+
+
+    
