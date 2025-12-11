@@ -18,7 +18,7 @@ async def doChallenge1():
         reset_lift(),
         lift_to_height(100)
     )
-    await robot.curve(270,174)
+    await robot.curve(260,174)
     await robot.turn(30)
     await robot.turn(-20)
     await robot.straight(-70)

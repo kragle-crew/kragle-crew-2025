@@ -23,22 +23,21 @@ async def task():
     #robot.settings(straight_acceleration=383)
     #await robot.curve(-140, 135)
     await robot.turn(75)
-    await robot.straight(150)
+    await robot.straight(110)
     await robot.turn(35)
     await robot.turn(-35)
     await robot.straight(-100)
     await robot.turn(-90)
     await multitask(lift_to_height(2100),robot.straight(200))
     await robot.turn(-80)
-    await robot.straight(120)
+    await robot.straight(130)
     await lift_to_height(1500)
     await robot.turn(50)
     await robot.straight(310)
     await robot.turn(-85)
     await robot.straight(450)
-    await robot.turn(80)
-    await robot.straight(1700)
-
+    await robot.turn(70)
+    await multitask(reset_lift(),robot.straight(1700))
 
 
 

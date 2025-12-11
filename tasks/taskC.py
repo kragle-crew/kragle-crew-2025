@@ -42,15 +42,14 @@ async def task():
     #goto third table
     robot.settings(straight_speed=300)
     await robot.straight(-140)
-    await robot.turn(-58)
+    await robot.turn(-55)
     # push lever on third table
-    await robot.straight(320)
+    await robot.straight(340)
     # return home
     await robot.straight(-150)
-    await robot.turn(45)
+    await robot.turn(55)
     robot.settings(straight_speed=500)
     await robot.straight(200)
     await robot.turn(25)
-    await robot.straight(800)
-
+    await multitask(reset_lift(),robot.straight(800))
     
