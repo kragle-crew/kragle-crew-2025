@@ -6,7 +6,7 @@ from pybricks.parameters import Color
 
 async def task():
     robot.settings(straight_speed=200,turn_rate=90)
-    #v take off
+    #take off
     robot.drive(100,0)
     while await colorRight.color() != Color.YELLOW:
       print(await colorRight.color())
@@ -28,23 +28,24 @@ async def task():
     robot.settings(straight_speed=500)
     await robot.turn(-98)
     await lift_to_height(108)
+    robot.settings(straight_speed=200)
     await robot.straight(122)
     # robot.settings(straight_acceleration=383)
-    await robot.curve(-140, 135)
+    await robot.curve(-140, 139)
     # goto table push up
     robot.settings(straight_speed=300)
-    await robot.straight(-165)
-    await robot.straight(28)
+    await lift_to_height(150)
+    await robot.straight(-147)
     await robot.turn(43)
-    await reset_lift()
+    #await reset_lift()
     # push table up
-    await robot.straight(170)
+    await robot.straight(160)
     #goto third table
     robot.settings(straight_speed=300)
-    await robot.straight(-140)
+    await robot.straight(-165)
     await robot.turn(-55)
     # push lever on third table
-    await robot.straight(340)
+    await robot.straight(365)
     # return home
     await robot.straight(-150)
     await robot.turn(55)
