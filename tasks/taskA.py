@@ -38,7 +38,7 @@ async def doChallenge1():
     await robot.straight(120)
     await lift_to_height(2067)
     await robot.straight(-50)
-    await robot.turn(-110)
+    await robot.turn(-115)
     await multitask(reset_lift(),robot.straight(1067))
 
 async def liftGoDown():

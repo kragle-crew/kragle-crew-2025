@@ -5,7 +5,8 @@ from pybricks.parameters import Color
 
 
 async def task():
-    await multitask(reset_lift(),robot.drive(500,0))
+    robot.settings(straight_speed=350)
+    await multitask(reset_lift(),robot.straight(10000))
 
 
 
