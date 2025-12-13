@@ -3,11 +3,12 @@ from tasks.taskA import task as a
 from tasks.taskB import task as b
 from tasks.taskC import task as c
 from tasks.taskD import task as d
+from tasks.taskE import task as e
 
 from pybricks.tools import wait
 from pybricks.parameters import Button
 
-menu_options = {"A": a, "B": b, "C": c, "D": d}
+menu_options = {"A": a, "B": b, "C": c, "D": d, "E": e}
 menu_option_keys = list(menu_options.keys())
 
 
