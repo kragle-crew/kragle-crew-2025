@@ -9,10 +9,11 @@ from pybricks.tools import wait
 from pybricks.parameters import Button
 
 menu_options = {"A": a, "B": b, "C": c, "D": d, "E": e}
-menu_option_keys = list(menu_options.keys()).sort()
+menu_option_keys = {"C", "D", "A", "B", "E"}
+menu_option_keys.sort()
 
 
-def menu(starting_selection="A"):
+def menu(starting_selection="C"):
     menu_index = menu_option_keys.index(starting_selection)
 
     def navigate(direction, old_index):
