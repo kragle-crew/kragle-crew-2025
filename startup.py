@@ -11,7 +11,7 @@ print(f"battery current {hub.battery.current()}mA")
 print(f"hub info {hub.system.info()}")
 print("entering menu loop")
 
-option="A"
+option="C"
 
 while True:
     print("presenting menu")
