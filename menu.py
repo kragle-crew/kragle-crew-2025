@@ -9,8 +9,7 @@ from pybricks.tools import wait
 from pybricks.parameters import Button
 
 menu_options = {"A": a, "B": b, "C": c, "D": d, "E": e}
-menu_option_keys = {"C", "D", "A", "B", "E"}
-menu_option_keys.sort()
+menu_option_keys = ["C", "D", "A", "B", "E"]
 
 
 def menu(starting_selection="C"):

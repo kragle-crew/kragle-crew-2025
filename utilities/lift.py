@@ -12,6 +12,6 @@ async def reset_lift():
     print("lift at zero")
     lift.reset_angle(0)
     
-async def lift_to_height(height_to_go_to):
+async def lift_to_height(height_to_go_to,robotLiftSpeed=lift_speed):
     print("lifting to height:", height_to_go_to)
-    await lift.run_target(lift_speed, -height_to_go_to)
+    await lift.run_target(robotLiftSpeed, -height_to_go_to)

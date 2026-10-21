@@ -9,7 +9,7 @@ right_motor = Motor(Port.B, Direction.CLOCKWISE)
 robot = DriveBase(left_motor, right_motor, 57.5, 100)
 lift = Motor(Port.D)
 pressure = ForceSensor(Port.C)
-colorLeft = ColorSensor(Port.E)
+# colorLeft = ColorSensor(Port.E)
 colorRight = ColorSensor(Port.F)
 
 print("init complete")
