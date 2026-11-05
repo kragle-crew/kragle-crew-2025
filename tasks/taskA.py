@@ -78,19 +78,35 @@ async def doChallenge1():
     )
     # Don't move on if we never found the pattern
     if not found:
-        return
+      pass
 
-    await robot.turn(-10)
+    await robot.turn(-11)
     await robot.straight(580)
-    await lift_to_height(800)
-    await robot.straight(-300)
-   
+    await robot.turn(12)
+    await lift_to_height(750)
+    await robot.straight(-100)
+    await robot.straight(100)
+    await reset_lift()
+    await robot.turn(-90)
+    await robot.straight(300) 
+    await robot.turn(135)
+    await robot.straight(-75)
+    await robot.turn(10)
+    robot.settings(straight_speed=100)
+    await robot.straight(400)
+    robot.settings(straight_speed=200)
+    await robot.straight(-30)
+    await robot.turn(90)
+    await robot.straight(1000)
+    # await robot.straight(-300)
+    # await robot.turn(135)
+    # await robot.straight(560)
+    # await robot.turn(-90)
+    # await robot.straight(270)
+    # await robot.turn(90)
+    # await robot.straight(-100)
     
-    
-    
-    
-    
-    
+    await()
     #await multitask(
      #robot.straight(280),
      #lift_to_height(800)
