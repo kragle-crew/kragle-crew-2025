@@ -4,12 +4,16 @@ from tasks.taskB import task as b
 from tasks.taskC import task as c
 from tasks.taskD import task as d
 from tasks.taskE import task as e
+from tasks.taskY import task as y
+from tasks.diagnostic import task as x
+from tasks.diagnostic import diagnose_y as z
 
 from pybricks.tools import wait
 from pybricks.parameters import Button
 
-menu_options = {"A": a, "B": b, "C": c, "D": d, "E": e}
-menu_option_keys = ["C", "D", "A", "B", "E"]
+# X = record Task A, Y = Task Y on its own, Z = record Task Y
+menu_options = {"A": a, "B": b, "C": c, "D": d, "E": e, "X": x, "Y": y, "Z": z}
+menu_option_keys = ["C", "D", "A", "B", "E", "X", "Y", "Z"]
 
 
 def menu(starting_selection="C"):
