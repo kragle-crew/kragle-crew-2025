@@ -1,4 +1,5 @@
-# Diagnostic recorder for Task A (menu X) and Task Y (menu Z).
+# Diagnostic recorder for Task A (menu X), Task Y (menu Z), and
+# Task Q (menu T - see taskT.py).
 #
 # This runs the task exactly like normal, and at the same time records what
 # the gyro, the motors, and both color sensors see. The task is NOT changed.
@@ -17,7 +18,10 @@
 #
 # When Task A finishes, the hub shows "?":
 #   press RIGHT if the run WORKED, press LEFT if it FAILED.
-#   (Do not press CENTER - that stops the whole program.)
+#
+# To stop a run early (e.g. the board wasn't reset), press CENTER, or LEFT and
+# RIGHT together. The robot stops and goes back to the menu, and logging keeps
+# going. To end the whole program, press the BLUETOOTH button.
 
 from pybricks.tools import multitask, wait, StopWatch
 from pybricks.parameters import Color, Port, Button, Axis
@@ -48,6 +52,7 @@ RAW_LOG = True          # print RAW lines? Set False if Task A acts differently
 RAW_EVERY_MS = 100      # how often to print a RAW line
 SPEED_LIMIT = 15        # mm/s - slower than this counts as "not driving"
 TURN_LIMIT = 10         # deg/s - slower than this counts as "not turning"
+LIFT_LIMIT = 30         # deg/s - lift motor slower than this = "lift not moving"
 DEBOUNCE = 3            # readings in a row before we believe a new move started
 MIN_STOP_MS = 300       # only report stops longer than this (e.g. lift moves)
 LABEL_TIMEOUT_MS = 30000  # how long to wait for the success/fail button
@@ -85,12 +90,13 @@ def print_headers():
     print_csv("RAW", "run", "ms", "distance", "speed", "odo_angle",
               "turn_rate", "heading", "pitch", "roll", "lift", "force",
               "R_color", "R_h", "R_s", "R_v", "R_reflect",
-              "L_color", "L_h", "L_s", "L_v", "L_reflect")
+              "L_color", "L_h", "L_s", "L_v", "L_reflect", "lift_load")
     print_csv("SEG", "run", "step", "kind", "start_ms", "ms", "distance",
               "odo_turn", "gyro_turn", "slip", "end_heading",
               "max_tilt", "max_bump", "max_load", "lift_change", "max_force",
               "R_end_color", "R_end_reflect", "R_colors_seen",
-              "L_end_color", "L_end_reflect", "L_colors_seen")
+              "L_end_color", "L_end_reflect", "L_colors_seen",
+              "max_lift_load")
     print_csv("RESULT", "run", "task", "label", "total_ms", "moves",
               "end_heading",
               "end_odo_angle", "total_slip", "max_tilt", "max_bump",
@@ -101,6 +107,8 @@ def print_headers():
     print_csv("PATTERN", "seen_at_mm", "overshoot_mm")
     print_csv("HOOK", "attempt", "max_load", "backed_up_mm", "hooked")
     print_csv("CHECK", "point", "heading", "target", "off_by")
+    print_csv("AIM", "target", "heading_before", "heading_after")
+    print_csv("C4PUSH", "attempt", "max_lift_load", "felt_lever")
     print_csv("START", "right_color", "left_color", "ok")
     print_csv("LINES", "drive", "sensor", "mm_into_drive:color ...")
 
@@ -136,6 +144,7 @@ async def take_reading(clock, zero):
     force = await get(pressure.force())
     left_load = await get(left_motor.load())
     right_load = await get(right_motor.load())
+    lift_load = await get(lift.load())
     return {
         "time": time,
         "distance": distance - zero["distance"],
@@ -154,6 +163,10 @@ async def take_reading(clock, zero):
         # How hard the drive motors are working. High = pushing something.
         "load": max(abs(left_load), abs(right_load)),
         "lift": lift.angle(),
+        "lift_speed": lift.speed(),
+        # How hard the lift motor is working. High = lifting something heavy
+        # or pressing against something.
+        "lift_load": abs(lift_load),
         "force": force,
         "right": right,
         "left": left,
@@ -169,12 +182,13 @@ def print_raw(reading):
               whole(reading["heading"]), reading["pitch"], reading["roll"],
               reading["lift"], whole(reading["force"] * 10) / 10,
               r[0], r[1], r[2], r[3], r[4],
-              l[0], l[1], l[2], l[3], l[4])
+              l[0], l[1], l[2], l[3], l[4],
+              whole(reading["lift_load"]))
 
 
 # ---------------- Splitting the run into moves ----------------
 
-def classify(speed, turn_rate):
+def classify(speed, turn_rate, lift_speed):
     """What is the robot doing right now?"""
     if speed > SPEED_LIMIT:
         return "FWD"
@@ -184,6 +198,12 @@ def classify(speed, turn_rate):
         return "RIGHT"
     if turn_rate < -TURN_LIMIT:
         return "LEFT"
+    # Standing still, but the lift is moving. lift_to_height() uses negative
+    # motor angles for higher heights, so a negative speed means going UP.
+    if lift_speed < -LIFT_LIMIT:
+        return "LIFT_UP"
+    if lift_speed > LIFT_LIMIT:
+        return "LIFT_DOWN"
     return "STOP"
 
 
@@ -208,6 +228,7 @@ class Segment:
         self.max_bump = 0
         self.max_load = 0
         self.max_force = 0
+        self.max_lift_load = 0
         self.right_seen = []
         self.left_seen = []
 
@@ -217,6 +238,7 @@ class Segment:
         self.max_bump = max(self.max_bump, reading["bump"])
         self.max_load = max(self.max_load, reading["load"])
         self.max_force = max(self.max_force, reading["force"])
+        self.max_lift_load = max(self.max_lift_load, reading["lift_load"])
         remember_color(self.right_seen, reading["right"][0])
         remember_color(self.left_seen, reading["left"][0])
 
@@ -239,7 +261,8 @@ class Segment:
                   self.max_tilt, whole(self.max_bump), whole(self.max_load),
                   b["lift"] - a["lift"], whole(self.max_force * 10) / 10,
                   b["right"][0], b["right"][4], ">".join(self.right_seen),
-                  b["left"][0], b["left"][4], ">".join(self.left_seen))
+                  b["left"][0], b["left"][4], ">".join(self.left_seen),
+                  whole(self.max_lift_load))
 
 
 async def recorder(clock, zero, start_reading):
@@ -270,7 +293,8 @@ async def recorder(clock, zero, start_reading):
             run["pickup_step"] = step
             print_csv("PICKUP", run["number"], reading["time"], step)
 
-        kind = classify(reading["speed"], reading["turn_rate"])
+        kind = classify(reading["speed"], reading["turn_rate"],
+                        reading["lift_speed"])
 
         if kind == segment.kind:
             # Still doing the same move. Any "maybe new move" readings
@@ -319,9 +343,32 @@ async def recorder(clock, zero, start_reading):
 
 # ---------------- Running the task ----------------
 
+async def watch_for_abort():
+    """Press CENTER (or LEFT and RIGHT together) to stop a run early. The run
+    stops and goes back to the menu, so the computer keeps logging."""
+    while True:
+        pressed = hub.buttons.pressed()
+        if Button.CENTER in pressed:
+            return True
+        if Button.LEFT in pressed and Button.RIGHT in pressed:
+            return True
+        await wait(20)
+
+
 async def run_the_task(task_function):
     try:
-        await task_function()
+        # race=True: whichever finishes first (the task, or someone pressing
+        # LEFT+RIGHT) stops the other one.
+        results = await multitask(task_function(), watch_for_abort(),
+                                  race=True)
+        if results[1] is True:
+            run["error"] = "aborted"
+            print("Run stopped with a button - back to the menu")
+            robot.stop()
+            lift.stop()
+            robot.use_gyro(False)
+            while hub.buttons.pressed():  # wait for the buttons to be let go
+                await wait(10)
     except Exception as e:
         # Keep the diagnostic going so we still get the RESULT line.
         run["error"] = repr(e).replace(",", ";")
@@ -383,6 +430,14 @@ async def diagnose(task_function, task_name):
     if run["number"] == 1:
         print_headers()
 
+    # CENTER now stops just this run (see watch_for_abort), so it must not
+    # end the whole program - that stops the logging too. The Bluetooth
+    # button becomes the emergency stop instead.
+    try:
+        hub.system.set_stop_button(Button.BLUETOOTH)
+    except Exception as e:
+        print("could not move the stop button:", e)
+
     gyro_ready = hub.imu.ready()
     if not gyro_ready:
         print("WARNING: gyro not ready. Keep the robot still for a few"
@@ -403,7 +458,10 @@ async def diagnose(task_function, task_name):
     await multitask(run_the_task(task_function),
                     recorder(clock, zero, start_reading))
 
-    label = await ask_for_label()
+    if run["error"] == "aborted":
+        label = "ABORTED"  # no need to ask - we know it didn't finish
+    else:
+        label = await ask_for_label()
 
     s = run["summary"]
     f = s["final"]

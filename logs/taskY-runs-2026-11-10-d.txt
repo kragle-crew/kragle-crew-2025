@@ -1,0 +1,64 @@
+Searching for any hub with Pybricks service...
+init complete
+starting up
+battery voltage 7231mV
+battery current 169mA
+hub info {'program_start_type': 3, 'host_connected_ble': True, 'name': 'not bob', 'reset_reason': 0}
+entering menu loop
+presenting menu
+Starting menu
+menu options: ['C', 'D', 'A', 'B', 'E', 'X', 'Y', 'Z']
+beginning menu loop
+current menu selection: C
+waiting for button press
+button pressed: {Button.RIGHT}. waiting for release
+buttons released
+navigating 1
+current menu selection: Z
+waiting for button press
+button pressed: {Button.RIGHT}. waiting for release
+buttons released
+navigating 1
+current menu selection: Y
+waiting for button press
+button pressed: {Button.CENTER}. waiting for release
+buttons released
+Y chosen
+selected Y. Running function
+START,WHITE,YELLOW,True
+button pressed. stopping lift
+moving to zero
+looking for pattern [Color.GREEN, Color.WHITE]
+seeing color Color.WHITE
+seeing color Color.GREEN
+seeing color Color.WHITE
+pattern found!
+lift at zero
+PATTERN,148,5
+LINES,580,R,0:WHITE 156:BLUE 163:WHITE 170:YELLOW 181:WHITE 259:YELLOW 279:RED 295:WHITE 313:YELLOW 333:WHITE 345:RED 347:WHITE 356:RED 371:WHITE 381:RED 386:YELLOW 388:WHITE 402:GREEN 413:YELLOW 434:GREEN 441:YELLOW 443:WHITE 447:YELLOW 450:WHITE 461:BLUE 477:WHITE 484:BLUE 492:WHITE 501:GREEN 509:YELLOW
+LINES,580,L,0:WHITE 29:BLUE 35:WHITE 43:GREEN 44:WHITE 74:YELLOW 115:WHITE 126:YELLOW 164:WHITE 181:YELLOW 294:RED 303:WHITE 312:GREEN 327:YELLOW 338:GREEN 343:YELLOW 347:WHITE 350:BLUE 362:WHITE 373:BLUE 387:WHITE 428:GREEN 435:YELLOW 451:RED 463:WHITE 473:BLUE 483:WHITE 485:GREEN 505:YELLOW 509:WHITE
+lifting to height: 750
+HOOK,1,153,95,True
+button pressed. stopping lift
+moving to zero
+lift at zero
+CHECK,C1_done,0,0,0
+LINES,300,R,0:WHITE 269:GREEN 294:BLUE 299:GREEN 302:BLUE
+LINES,300,L,0:GREEN 17:BLUE 29:WHITE 33:BLUE 43:GREEN 49:BLUE 60:WHITE 73:GREEN 90:WHITE 139:GREEN 161:WHITE 190:GREEN 214:YELLOW 216:RED 230:YELLOW 232:GREEN 270:YELLOW 280:WHITE
+lifting to height: 40
+CHECK,C2_push,45,47,-2
+LINES,C2_push,R,0:BLUE 41:WHITE 50:GREEN 105:WHITE 109:GREEN
+LINES,C2_push,L,0:GREEN 0:YELLOW 0:GREEN 10:WHITE 43:YELLOW 70:WHITE 111:GREEN 113:BLUE 114:GREEN 115:BLUE 116:GREEN 117:YELLOW 120:BLUE 122:GREEN 123:BLUE 131:YELLOW 132:BLUE 138:GREEN
+lifting to height: 0
+CHECK,C3_drive,140,139,1
+LINES,C3_drive,R,0:WHITE 48:GREEN 60:BLUE 64:GREEN 66:BLUE 75:RED 85:YELLOW 86:GREEN 105:WHITE 134:GREEN 169:WHITE 181:GREEN 224:WHITE 239:GREEN 245:YELLOW 248:RED 252:WHITE 273:YELLOW 276:WHITE 285:YELLOW 306:GREEN 308:WHITE 309:BLUE 317:WHITE 322:YELLOW 345:WHITE 396:YELLOW 505:RED 513:WHITE 527:YELLOW
+LINES,C3_drive,L,0:WHITE 1:GREEN 11:WHITE 67:GREEN 75:YELLOW 112:WHITE 117:GREEN 119:WHITE 121:GREEN 148:BLUE 154:WHITE 203:BLUE 211:WHITE 251:GREEN 262:WHITE 264:GREEN 266:WHITE 269:GREEN 274:WHITE 276:YELLOW 279:GREEN 297:WHITE 308:RED 319:YELLOW 349:RED 359:WHITE 396:YELLOW 418:WHITE 427:RED 456:WHITE
+CHECK,end,242,143,99
+completed Y
+presenting menu
+Starting menu
+menu options: ['C', 'D', 'A', 'B', 'E', 'X', 'Y', 'Z']
+beginning menu loop
+current menu selection: Y
+waiting for button press
+button pressed: {Button.CENTER}. waiting for release

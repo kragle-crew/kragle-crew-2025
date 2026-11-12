@@ -7,13 +7,17 @@ from tasks.taskE import task as e
 from tasks.taskY import task as y
 from tasks.diagnostic import task as x
 from tasks.diagnostic import diagnose_y as z
+from tasks.taskQ import task as q
+from tasks.taskT import task as t
 
 from pybricks.tools import wait
 from pybricks.parameters import Button
 
 # X = record Task A, Y = Task Y on its own, Z = record Task Y
-menu_options = {"A": a, "B": b, "C": c, "D": d, "E": e, "X": x, "Y": y, "Z": z}
-menu_option_keys = ["C", "D", "A", "B", "E", "X", "Y", "Z"]
+# Q = Task Q on its own (copy of B), T = record Task Q
+menu_options = {"A": a, "B": b, "C": c, "D": d, "E": e, "X": x, "Y": y, "Z": z,
+                "Q": q, "T": t}
+menu_option_keys = ["C", "D", "A", "B", "E", "X", "Y", "Z", "Q", "T"]
 
 
 def menu(starting_selection="C"):
