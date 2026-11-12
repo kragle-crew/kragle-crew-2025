@@ -7,7 +7,7 @@ async def get(result):
     This handles both, so we always end up with the real value.
 
     Use it like:  force = await get(pressure.force())"""
-    if result is None or isinstance(result, (int, float, Color)):
+    if result is None or isinstance(result, (bool, int, float, Color)):
         return result  # already a real value
     return await result
 

@@ -108,7 +108,10 @@ def print_headers():
     print_csv("HOOK", "attempt", "max_load", "backed_up_mm", "hooked")
     print_csv("CHECK", "point", "heading", "target", "off_by")
     print_csv("AIM", "target", "heading_before", "heading_after")
-    print_csv("C4PUSH", "attempt", "max_lift_load", "felt_lever")
+    print_csv("DRIVE", "drive", "heading_at_start", "heading_at_end",
+              "average_heading", "target")
+    print_csv("C4FEEL", "push", "max_lift_load", "stop_height", "sensor_pressed",
+              "felt_lever")
     print_csv("START", "right_color", "left_color", "ok")
     print_csv("LINES", "drive", "sensor", "mm_into_drive:color ...")
 
