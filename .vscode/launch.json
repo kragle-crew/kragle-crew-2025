@@ -8,7 +8,7 @@
             "request": "launch",
             "module": "pybricksdev",
             //"args": ["run", "ble", "--name","not bob","startup.py"],
-            "args": ["run", "ble", "--name","Bob","startup.py"],
+            "args": ["run", "ble", "--name","not bob","startup.py"],
         }
     ]
 }
