@@ -22,5 +22,7 @@ pushing, and keep changes easy for students to read.
 - `init.py` — hardware setup (hub, drive base `robot`, motors, sensors). Check which
   sensors are actually enabled here before importing them (e.g. `colorLeft` may be
   commented out).
-- `tasks/taskA.py` … `taskE.py` — one mission run each, as `async def task()`.
+- `tasks/taskA.py` … `taskD.py` — the four mission runs, one each, as `async def task()`
+  (menu A–D). `taskE.py` is not on the menu.
+- `tasks/diagnostic.py` — the recorder; menu Ad–Dd run A–D with it (`record_a` …).
 - `utilities/` — shared helpers such as `lift.py` (`reset_lift`, `lift_to_height`).

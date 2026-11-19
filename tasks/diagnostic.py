@@ -1,5 +1,5 @@
-# Diagnostic recorder for Task A (menu X), Task Y (menu Z), and
-# Task Q (menu T - see taskT.py).
+# Diagnostic recorder: menu Ad, Bd, Cd and Dd run Task A, B, C or D with
+# the recorder (see record_a ... record_d at the bottom).
 #
 # This runs the task exactly like normal, and at the same time records what
 # the gyro, the motors, and both color sensors see. The task is NOT changed.
@@ -16,7 +16,7 @@
 #   PICKUP  - printed if the robot tilts a lot (someone picked it up)
 #   RESULT  - one line at the end, with the success/fail label you enter
 #
-# When Task A finishes, the hub shows "?":
+# When the task finishes, the hub shows "?":
 #   press RIGHT if the run WORKED, press LEFT if it FAILED.
 #
 # To stop a run early (e.g. the board wasn't reset), press CENTER, or LEFT and
@@ -31,7 +31,9 @@ from init import hub, robot, lift, pressure, left_motor, right_motor, colorRight
 from init import WHEEL_DIAMETER, AXLE_TRACK
 from utilities.readings import get, color_name
 from tasks.taskA import task as task_a
-from tasks.taskY import task as task_y
+from tasks.taskB import task as task_b
+from tasks.taskC import task as task_c
+from tasks.taskD import task as task_d
 
 # The left color sensor is commented out in init.py right now.
 # If init.py makes it, use that one. Otherwise try to make it here.
@@ -424,14 +426,24 @@ async def ask_for_label():
     return label
 
 
-async def task():
-    """Menu X: record Task A."""
+async def record_a():
+    """Menu Ad: Task A with the recorder."""
     await diagnose(task_a, "A")
 
 
-async def diagnose_y():
-    """Menu Z: record Task Y."""
-    await diagnose(task_y, "Y")
+async def record_b():
+    """Menu Bd: Task B with the recorder."""
+    await diagnose(task_b, "B")
+
+
+async def record_c():
+    """Menu Cd: Task C with the recorder."""
+    await diagnose(task_c, "C")
+
+
+async def record_d():
+    """Menu Dd: Task D with the recorder."""
+    await diagnose(task_d, "D")
 
 
 async def diagnose(task_function, task_name):

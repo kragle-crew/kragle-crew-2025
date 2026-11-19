@@ -3,28 +3,23 @@ from tasks.taskA import task as a
 from tasks.taskB import task as b
 from tasks.taskC import task as c
 from tasks.taskD import task as d
-from tasks.taskE import task as e
-from tasks.taskY import task as y
-from tasks.diagnostic import task as x
-from tasks.diagnostic import diagnose_y as z
-from tasks.taskQ import task as q
-from tasks.taskT import task as t
-from tasks.taskM import task as m
-from tasks.taskF import task as f
+from tasks.diagnostic import record_a, record_b, record_c, record_d
 
-from pybricks.tools import wait
+from pybricks.tools import wait, StopWatch
 from pybricks.parameters import Button
 
-# X = record Task A, Y = Task Y on its own, Z = record Task Y
-# Q = Task Q on its own (copy of B), T = record Task Q
-# M = record Task M (improving Task C)
-# F = Task F (carry a part to the far right corner, no lift reset)
-menu_options = {"A": a, "B": b, "C": c, "D": d, "E": e, "X": x, "Y": y, "Z": z,
-                "Q": q, "T": t, "M": m, "F": f}
-menu_option_keys = ["C", "D", "A", "B", "E", "X", "Y", "Z", "Q", "T", "M", "F"]
+# A, B, C, D = the four runs.
+# Ad, Bd, Cd, Dd = the same runs with the diagnostic recorder (logs the
+# sensors). The hub can only show one letter, so a "d" option shows its
+# letter BLINKING.
+menu_options = {"A": a, "B": b, "C": c, "D": d,
+                "Ad": record_a, "Bd": record_b, "Cd": record_c, "Dd": record_d}
+menu_option_keys = ["A", "B", "C", "D", "Ad", "Bd", "Cd", "Dd"]
+
+BLINK_MS = 300   # how fast a "d" option blinks
 
 
-def menu(starting_selection="C"):
+def menu(starting_selection="A"):
     menu_index = menu_option_keys.index(starting_selection)
 
     def navigate(direction, old_index):
@@ -33,17 +28,27 @@ def menu(starting_selection="C"):
 
     print("Starting menu")
     print(f"menu options: {menu_option_keys}")
-    
+
     hub.system.set_stop_button(None)
     print("beginning menu loop")
     while True:
-        print(f"current menu selection: {menu_option_keys[menu_index]}")
-        hub.display.char(menu_option_keys[menu_index])
+        key = menu_option_keys[menu_index]
+        print(f"current menu selection: {key}")
+        hub.display.char(key[0])
+        recorded = key.endswith("d")
 
         pressed = ()
         print("waiting for button press")
+        blink = StopWatch()
         while not pressed:
             pressed = hub.buttons.pressed()
+            if recorded and blink.time() > BLINK_MS:
+                # Blink: letter on, then off, then on ...
+                if blink.time() > 2 * BLINK_MS:
+                    hub.display.char(key[0])
+                    blink.reset()
+                else:
+                    hub.display.off()
             wait(10)
 
         print(f"button pressed: {pressed}. waiting for release")
@@ -52,12 +57,10 @@ def menu(starting_selection="C"):
 
         print("buttons released")
         if Button.CENTER in pressed:
-            print(f"{menu_option_keys[menu_index]} chosen")
+            print(f"{key} chosen")
+            hub.display.char(key[0])
             hub.system.set_stop_button(Button.CENTER)
-            return (
-                menu_option_keys[menu_index],
-                menu_options[menu_option_keys[menu_index]],
-            )
+            return (key, menu_options[key])
 
         elif Button.LEFT in pressed:
             menu_index = navigate(-1, menu_index)

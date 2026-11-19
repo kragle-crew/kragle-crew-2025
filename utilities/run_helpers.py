@@ -15,7 +15,7 @@ def print_csv(*values):
 # Menu tasks that run with the recorder. The recorder already handles
 # stopping a run with the buttons (and logs it), so run_with_abort()
 # leaves these alone.
-RECORDED_TASKS = ("X", "Z", "T", "M")
+RECORDED_TASKS = ("Ad", "Bd", "Cd", "Dd")
 
 
 async def run_with_abort(task_function):
