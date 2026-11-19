@@ -9,6 +9,15 @@
             "module": "pybricksdev",
             "args": ["run", "ble", "--name","not bob","startup.py"],
             //"args": ["run", "ble", "--name","Bob","startup.py"],
+        },
+        {
+            // Shows the menu, runs the task you pick ONCE, then ends -
+            // quick to send updates.
+            "name": "Menu, run once",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pybricksdev",
+            "args": ["run", "ble", "--name","not bob","run_once.py"],
         }
     ]
 }

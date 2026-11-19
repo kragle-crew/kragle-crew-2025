@@ -1,0 +1,112 @@
+Searching for not bob...
+init complete
+starting up
+battery voltage 7968mV
+battery current 156mA
+hub info {'program_start_type': 3, 'host_connected_ble': True, 'name': 'not bob', 'reset_reason': 0}
+entering menu loop
+presenting menu
+Starting menu
+menu options: ['C', 'D', 'A', 'B', 'E', 'X', 'Y', 'Z', 'Q', 'T', 'M', 'F']
+beginning menu loop
+current menu selection: C
+waiting for button press
+button pressed: {Button.RIGHT}. waiting for release
+buttons released
+navigating 1
+current menu selection: F
+waiting for button press
+button pressed: {Button.CENTER}. waiting for release
+buttons released
+F chosen
+selected F. Running function
+battery voltage 7962mV
+START,WHITE,YELLOW,True
+looking for pattern [Color.GREEN, Color.WHITE]
+seeing color Color.WHITE
+seeing color Color.GREEN
+seeing color Color.WHITE
+pattern found!
+PATTERN,231,5
+AIM,-10.5,-2.3,-9.2
+DRIVE,F_out,-9.2,-9.5,-10.5,-10.5,3.5,154
+LINES,F_out,R,0:WHITE 157:BLUE 165:WHITE 175:YELLOW 185:WHITE 260:YELLOW 280:RED 295:WHITE 313:YELLOW 333:WHITE 346:RED 348:WHITE 359:RED 371:WHITE 381:RED 389:YELLOW 389:WHITE 400:GREEN 410:YELLOW 436:GREEN 440:WHITE 448:YELLOW 452:WHITE 463:BLUE 473:WHITE
+LINES,F_out,L,0:WHITE 28:BLUE 32:WHITE 36:YELLOW 43:WHITE 73:YELLOW 108:RED 110:YELLOW 115:WHITE 123:YELLOW 167:WHITE 180:RED 184:YELLOW 295:RED 303:WHITE 308:GREEN 322:YELLOW 339:GREEN 341:YELLOW 347:WHITE 353:BLUE 364:WHITE 378:BLUE 382:WHITE 401:YELLOW 402:RED 404:WHITE 426:GREEN 435:YELLOW 452:RED
+POS,F_out,-89.1,477.6,-9.5
+AIM,34.5,-9.5,33.6
+CHECK,F_turn,34,34.5,-1
+DRIVE,F_corner,33.7,36.3,34.0,34.5,3.3,175
+LINES,F_corner,R,0:WHITE 12:YELLOW 23:GREEN 37:YELLOW 50:GREEN 73:WHITE 78:GREEN 80:WHITE 162:GREEN 166:WHITE
+LINES,F_corner,L,0:WHITE 4:YELLOW 30:WHITE 63:GREEN 79:BLUE 113:GREEN 115:WHITE 117:YELLOW 119:RED 132:YELLOW 137:GREEN 146:YELLOW
+POS,F_corner,61.4,690.0,36.3
+lifting to height: 1500
+completed F
+presenting menu
+Starting menu
+menu options: ['C', 'D', 'A', 'B', 'E', 'X', 'Y', 'Z', 'Q', 'T', 'M', 'F']
+beginning menu loop
+current menu selection: F
+waiting for button press
+button pressed: {Button.CENTER}. waiting for release
+buttons released
+F chosen
+selected F. Running function
+battery voltage 7954mV
+START,WHITE,YELLOW,True
+looking for pattern [Color.GREEN, Color.WHITE]
+seeing color Color.WHITE
+seeing color Color.GREEN
+seeing color Color.WHITE
+pattern found!
+PATTERN,150,5
+AIM,-10.5,0.3,-9.0
+DRIVE,F_out,-9.0,-10.6,-10.5,-10.5,2.7,119
+LINES,F_out,R,0:WHITE 161:BLUE 168:WHITE 175:YELLOW 184:WHITE 262:YELLOW 280:RED 295:WHITE 312:YELLOW 334:WHITE 347:RED 350:WHITE 355:RED 372:WHITE 381:RED 386:YELLOW 390:WHITE 401:YELLOW 403:GREEN 415:YELLOW 427:GREEN 441:WHITE 445:YELLOW 453:GREEN 457:WHITE 463:BLUE 473:WHITE
+LINES,F_out,L,0:WHITE 28:BLUE 35:WHITE 39:YELLOW 41:GREEN 46:WHITE 57:GREEN 59:WHITE 75:YELLOW 118:WHITE 124:YELLOW 168:WHITE 185:YELLOW 295:RED 301:WHITE 308:GREEN 321:YELLOW 348:WHITE 353:BLUE 363:WHITE 377:BLUE 386:WHITE 399:YELLOW 403:GREEN 405:YELLOW 409:RED 411:WHITE 429:GREEN 442:YELLOW 455:RED
+POS,F_out,-89.5,477.6,-10.5
+AIM,34.5,-10.5,35.2
+CHECK,F_turn,35,34.5,1
+DRIVE,F_corner,35.2,24.5,34.4,34.5,16.0,177
+LINES,F_corner,R,0:WHITE 9:YELLOW 22:GREEN 35:YELLOW 48:GREEN 82:WHITE 88:YELLOW 95:GREEN 99:WHITE 112:BLUE 121:WHITE 140:BLUE 143:WHITE 157:GREEN 183:YELLOW 187:WHITE 193:YELLOW 197:WHITE 199:YELLOW 203:GREEN
+LINES,F_corner,L,0:YELLOW 14:WHITE 15:YELLOW 29:WHITE 64:GREEN 79:BLUE 109:GREEN 115:YELLOW 117:RED 130:YELLOW 135:GREEN 147:YELLOW 160:GREEN 194:YELLOW 200:GREEN 242:BLUE
+POS,F_corner,49.4,697.2,24.8
+lifting to height: 1500
+completed F
+presenting menu
+Starting menu
+menu options: ['C', 'D', 'A', 'B', 'E', 'X', 'Y', 'Z', 'Q', 'T', 'M', 'F']
+beginning menu loop
+current menu selection: F
+waiting for button press
+button pressed: {Button.CENTER}. waiting for release
+buttons released
+F chosen
+selected F. Running function
+battery voltage 7944mV
+START,WHITE,YELLOW,True
+looking for pattern [Color.GREEN, Color.WHITE]
+seeing color Color.WHITE
+seeing color Color.GREEN
+seeing color Color.WHITE
+pattern found!
+PATTERN,146,5
+AIM,-10.5,0.8,-8.7
+DRIVE,F_out,-8.7,-8.9,-10.4,-10.5,2.2,104
+LINES,F_out,R,0:WHITE 158:BLUE 167:WHITE 175:YELLOW 184:WHITE 260:YELLOW 283:RED 296:WHITE 315:YELLOW 334:WHITE 348:RED 350:WHITE 358:RED 373:WHITE 383:RED 390:YELLOW 392:WHITE 403:YELLOW 405:GREEN 419:YELLOW 425:GREEN 442:WHITE 443:YELLOW 456:GREEN 458:WHITE 465:BLUE 475:WHITE
+LINES,F_out,L,0:WHITE 29:BLUE 35:WHITE 41:YELLOW 47:WHITE 73:YELLOW 168:WHITE 186:YELLOW 296:RED 304:WHITE 312:GREEN 325:YELLOW 349:WHITE 353:BLUE 365:WHITE 378:BLUE 388:WHITE 401:YELLOW 403:GREEN 408:YELLOW 412:WHITE 429:GREEN 442:YELLOW 455:RED 469:WHITE 478:BLUE 482:WHITE 482:BLUE
+POS,F_out,-86.1,477.2,-9.0
+AIM,34.5,-9.0,34.3
+CHECK,F_turn,34,34.5,0
+DRIVE,F_corner,34.3,30.6,34.4,34.5,4.1,90
+LINES,F_corner,R,0:WHITE 9:GREEN 17:YELLOW 19:GREEN 39:YELLOW 42:GREEN 85:YELLOW 94:GREEN 103:WHITE 112:BLUE 135:WHITE 166:GREEN 180:YELLOW 185:GREEN 239:YELLOW
+LINES,F_corner,L,0:YELLOW 13:WHITE 14:YELLOW 34:WHITE 69:GREEN 77:BLUE 97:WHITE 103:GREEN 113:YELLOW 134:GREEN 149:YELLOW 162:GREEN 180:WHITE 182:GREEN 214:YELLOW 225:RED
+POS,F_corner,58.7,689.8,30.7
+lifting to height: 1500
+completed F
+presenting menu
+Starting menu
+menu options: ['C', 'D', 'A', 'B', 'E', 'X', 'Y', 'Z', 'Q', 'T', 'M', 'F']
+beginning menu loop
+current menu selection: F
+waiting for button press
+button pressed: {Button.CENTER}. waiting for release

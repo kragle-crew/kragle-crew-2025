@@ -9,15 +9,19 @@ from tasks.diagnostic import task as x
 from tasks.diagnostic import diagnose_y as z
 from tasks.taskQ import task as q
 from tasks.taskT import task as t
+from tasks.taskM import task as m
+from tasks.taskF import task as f
 
 from pybricks.tools import wait
 from pybricks.parameters import Button
 
 # X = record Task A, Y = Task Y on its own, Z = record Task Y
 # Q = Task Q on its own (copy of B), T = record Task Q
+# M = record Task M (improving Task C)
+# F = Task F (carry a part to the far right corner, no lift reset)
 menu_options = {"A": a, "B": b, "C": c, "D": d, "E": e, "X": x, "Y": y, "Z": z,
-                "Q": q, "T": t}
-menu_option_keys = ["C", "D", "A", "B", "E", "X", "Y", "Z", "Q", "T"]
+                "Q": q, "T": t, "M": m, "F": f}
+menu_option_keys = ["C", "D", "A", "B", "E", "X", "Y", "Z", "Q", "T", "M", "F"]
 
 
 def menu(starting_selection="C"):

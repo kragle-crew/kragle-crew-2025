@@ -109,9 +109,21 @@ def print_headers():
     print_csv("CHECK", "point", "heading", "target", "off_by")
     print_csv("AIM", "target", "heading_before", "heading_after")
     print_csv("DRIVE", "drive", "heading_at_start", "heading_at_end",
-              "average_heading", "target")
+              "average_heading", "target", "worst_heading_error", "max_load")
+    print_csv("EDGE", "drive", "edge_seen_at_mm", "mm_driven",
+              "worst_heading_error", "max_load", "worst_tilt", "bumped")
+    print_csv("PRESS", "mm_moved", "ms", "max_load")
+    print_csv("BUMP", "drive", "mm_driven", "mm_meant", "worst_twist",
+              "max_load", "worst_tilt")
+    print_csv("CAREFUL", "drive", "mm_driven", "mm_meant", "worst_twist",
+              "max_load", "worst_tilt")
+    print_csv("C2_FIX", "change_to_340_drive_mm")
+    print_csv("GOTO", "name", "x_now", "y_now", "x_to", "y_to", "heading", "mm")
+    print_csv("POS", "name", "x", "y", "heading")
     print_csv("C4FEEL", "push", "max_lift_load", "stop_height", "sensor_pressed",
               "felt_lever")
+    print_csv("BACKUP_FIX", "extra_mm_on_300_drive", "extra_mm_on_150_drive",
+              "c1_stopped_short_mm")
     print_csv("START", "right_color", "left_color", "ok")
     print_csv("LINES", "drive", "sensor", "mm_into_drive:color ...")
 

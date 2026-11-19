@@ -109,6 +109,9 @@ C3_DRIVE_SPEED = 200
 # False = drive this part without the gyro, like Task A. When the robot
 # touches the model here, the gyro fights to keep its heading and spins a wheel.
 GYRO_FOR_C3 = False
+# The lift goes up to this height DURING the long drive back.
+# None = leave the lift where it is.
+RETURN_LIFT_HEIGHT = 2000
 
 headings = HeadingChecker()
 
@@ -252,7 +255,14 @@ async def do_long_drive():
     if not GYRO_FOR_C3:
         robot.use_gyro(False)
     robot.settings(straight_speed=C3_DRIVE_SPEED)
-    await straight_and_watch("C3_drive", C3_DRIVE_MM)
+    if RETURN_LIFT_HEIGHT is None:
+        await straight_and_watch("C3_drive", C3_DRIVE_MM)
+    else:
+        # Raise the lift while driving back.
+        await multitask(
+            straight_and_watch("C3_drive", C3_DRIVE_MM),
+            lift_to_height(RETURN_LIFT_HEIGHT),
+        )
     robot.settings(straight_speed=NORMAL_SPEED)
     headings.check("end", 143)
 
