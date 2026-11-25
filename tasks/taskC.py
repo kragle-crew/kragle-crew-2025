@@ -159,7 +159,12 @@ C1_ARM_AFTER_HEIGHT = 900
 # run: the right color sensor comes off a long RED patch onto WHITE 294-311
 # mm into that drive. It drives C2_LINE_EXTRA_MM past that edge. If it
 # doesn't see the edge (e.g. after a bump) it just drives the normal 340.
-C2_USE_LINE = True
+# Now False: the edge shows up anywhere from 253 to 311 mm in, so it moves
+# the stop around instead of fixing it. Since the waypoint change it is
+# rarely seen; when it was (taskC-runs-6, run 1) the robot stopped 10 mm
+# short of every other run and both fast pushes missed the lever. With
+# False it drives the exact distance (still stopping if it bumps a model).
+C2_USE_LINE = False
 C2_LINE_EXTRA_MM = 38      # the robot used to stop about 38 mm past it
 # How far it backs up before turning in to challenge 2 (Task C: 140). In
 # every run of batch 4 the back-up was clean for the first 100-117 mm, then
@@ -175,7 +180,10 @@ C2_PUSH_MM = 200
 # After the push, keep pressing the lever: drive forward slowly for up to
 # C2_PRESS_MS, or C2_PRESS_MM further, whichever comes first. (The wheels
 # skid on the lever, and it needs more "pressed time".)
-C2_PRESS_MM = 40
+# Was 40. In taskC-runs-2 the lever didn't go all the way in, and every
+# press moved its full 40 mm in about 0.7 s - so it stopped because of this
+# limit, not because the lever stopped it. Push further.
+C2_PRESS_MM = 60
 C2_PRESS_MS = 1500
 C2_PRESS_SPEED = 60        # mm/s - slow and steady
 # "Jam" retry: after the press, back up a little and push into the lever
@@ -184,10 +192,48 @@ C2_PRESS_SPEED = 60        # mm/s - slow and steady
 C2_JAM = True
 # Run 6: the press was pushing the lever (it felt it - load 158) but a slow
 # push wasn't enough to get it all the way in, so the jam is a real hit:
-C2_JAM_BACK_MM = 60        # how far it backs up before pushing again (was 40)
-C2_JAM_SPEED = 350         # mm/s when it drives back in (most moves: 200)
-C2_JAM_EXTRA_MM = 15       # drives this much FURTHER than where it backed
+# How far it backs up before pushing again - the run-up. Was 60: with only
+# 60 + 25 mm to speed up, the jam never got above about 280 mm/s
+# (taskC-runs-5). 100 hit hard (416-487 mm/s) but backed into the mission
+# model behind it (taskC-runs-6, runs 2 and 4). 70 still gets to about
+# 430 mm/s with the fast speed-up below.
+C2_JAM_BACK_MM = 70
+C2_JAM_SPEED = 500         # mm/s top speed going in (was 350; most moves: 200)
+# How quickly it speeds up and slows down on the jam (mm/s per second), so
+# it is still going fast when it reaches the lever. It still STOPS at the
+# same spot every time (C2_JAM_EXTRA_MM past where it backed up from), so a
+# faster hit doesn't change where the robot ends up.
+C2_JAM_ACCEL = 2000
+# Never keep shoving for longer than this (ms) if the lever stops the robot.
+C2_JAM_TIMEOUT_MS = 1500
+C2_JAM_EXTRA_MM = 25       # (was 15) drives this much FURTHER than where it backed
                            # up from, to push the lever further in
+# Before the jam (the second push), turn this many degrees right of the
+# challenge 2 heading. Was 0: the lever didn't go all the way in
+# (taskC-runs-3, run 2), and the team saw it needed about 10 degrees more.
+C2_JAM_TURN = 10
+# A THIRD push, after the jam: back up the same way, raise the arm this much
+# higher than C2_ARM_HEIGHT, and drive in fast again, then press.
+# In taskC-runs-5 nothing ever pushed back: the arm touches the lever about
+# 6-8 cm into the first push, then slides past it, and every press after
+# that moves freely. So the third push raises the lift more, to hit the
+# lever with the bottom plate of the lift instead of the arm.
+# Was 50 (arm at 850). 0 = no third push.
+# 150 (arm at 950) hit the lever in 3 of 4 runs (taskC-runs-6), but in
+# run 3 it grazed the lever and went over the top. So a little lower.
+#   JAM line load under about 180?  It missed the lever.
+C2_THIRD_PUSH_RAISE = 125
+
+# Retry if the lever wasn't hit. A fast push that HITS the lever shows a
+# drive motor load of about 240-310 on its JAM line; one that misses shows
+# about 90-110 (taskC-runs-6). If neither the jam nor the third push got
+# above C2_HIT_LOAD, it backs up and jams again at C2_ARM_HEIGHT, going
+# C2_RETRY_EXTRA_MM further in each time, up to C2_RETRIES times.
+# (It can tell "hit" from "missed", but not "pushed all the way" from
+# "grazed over the top" - both of those feel like a hit.)
+C2_HIT_LOAD = 180
+C2_RETRIES = 2
+C2_RETRY_EXTRA_MM = 15
 # The edge on the 340 mm drive must be seen at least this far in. It was
 # seen at 285-311 mm; once at 253, which stopped the robot 35 mm short, so
 # anything earlier than this is ignored.
@@ -197,6 +243,30 @@ C2_LINE_SEARCH_FROM = 275
 # the wrong spot it would miss anyway, and pushing on breaks pieces off.
 # False = carry on and try challenge 2 anyway.
 C2_SKIP_AFTER_BUMP = True
+# How much twist counts as a bump on that 340 mm drive. Was BUMP_TWIST (3):
+# in both runs of taskC-runs-1 the robot brushed something about 120 mm in
+# (3.4 and 3.9 degrees) and stopped, though nothing looked wrong. Clean runs
+# stay under 1.5; the real crash in batch 7 was 32.
+C2_DRIVE_MAX_TWIST = 6
+
+# --- Going home to the LEFT home area at the end ---
+# True = after challenge 2, drive back to the left home area.
+# False = stay where it finishes.
+GO_HOME = True
+# The way home, from the challenge 2 lever (all backward):
+#   back out HOME_BACK_OUT_MM, turn HOME_TURN_1 right, back HOME_BACK_1_MM,
+#   turn HOME_TURN_2 left, back HOME_BACK_2_MM into the left home area.
+# (The first try went in straight lines from spot to spot and backed into
+# the seed bomb model - this is the team's route.)
+HOME_BACK_OUT_MM = 50
+# Degrees right of the challenge 2 heading (83). Was 15 - it backed into
+# the seed bomb (taskC-runs-3, run 2). Then 25 - in runs 1 and 4 of
+# taskC-runs-6 the first back-up home hit a model on the robot's right and
+# got twisted 40 degrees, so a bit more again.
+HOME_TURN_1 = 32
+HOME_BACK_1_MM = 500      # was 600
+HOME_TURN_2 = -100        # degrees (negative = left). Was -90 (taskC-runs-4)
+HOME_BACK_2_MM = 600
 
 # --- Task Q's two levers, done between challenge 1 and challenge 2 ---
 # Task Q's seeds don't score, so its two levers (lever up, lever down) are
@@ -211,7 +281,13 @@ DO_LEVERS = True
 # spot is only 2 cm from Task C's path, so the detour is short.
 LEVER_START = (-446.7, 172.4)      # where Task Q starts its lever-up drive
 C2_WAYPOINT_1 = (-818.6, 80.8)     # end of Task C's 300 mm drive
-C2_WAYPOINT_2 = (-963.5, 119.6)    # end of Task C's 150 mm drive
+# End of Task C's 150 mm drive. Was (-963.5, 119.6): on the 340 mm drive
+# after it, the robot's LEFT side kept catching something 100-150 mm in
+# (taskC-runs-1: twisted 3.4 and 3.9 degrees; runs-3: 7.1, and it stopped).
+# 12 mm further right (east). That also starts the challenge 2 push 12 mm
+# closer to the lever, so it pushes it a bit further in.
+#   Still catching on the left?  move x up a bit more (e.g. -940).
+C2_WAYPOINT_2 = (-951.5, 119.6)
 # True = stop right after the levers (for testing the new part quickly).
 STOP_AFTER_LEVERS = False
 # After the lever-down push, back straight off the lever this far before
@@ -418,6 +494,43 @@ async def press_forward(extra_mm, time_ms, speed):
               round(biggest_load))
 
 
+async def jam_in(name, extra_mm=None):
+    """Drive back in FAST to hit the lever: C2_JAM_BACK_MM + C2_JAM_EXTRA_MM
+    forward, at C2_JAM_SPEED, speeding up and slowing down quickly
+    (C2_JAM_ACCEL). Stops at the same spot every time, or after
+    C2_JAM_TIMEOUT_MS if the lever stops it.
+    Prints:  JAM,<name>,<arm height>,<mm moved>,<mm meant>,<top speed>,
+                 <highest drive load>
+    Did it hit the lever?  A hit shows a high load (about 240-310) and/or
+    stops short of "mm meant". Missing it looks like a normal drive (about
+    90-110). Returns the highest load."""
+    if extra_mm is None:
+        extra_mm = C2_JAM_EXTRA_MM
+    distance = C2_JAM_BACK_MM + extra_mm
+    normal = robot.settings()
+    robot.settings(straight_speed=C2_JAM_SPEED,
+                   straight_acceleration=C2_JAM_ACCEL)
+    start = robot.distance()
+    top = {"speed": 0, "load": 0}
+
+    async def watch():
+        while True:
+            top["speed"] = max(top["speed"], robot.state()[1])
+            load = max(abs(await get(left_motor.load())),
+                       abs(await get(right_motor.load())))
+            top["load"] = max(top["load"], load)
+            await wait(10)
+
+    # race=True: done when the drive finishes (or the time runs out).
+    await multitask(robot.straight(distance), watch(),
+                    wait(C2_JAM_TIMEOUT_MS), race=True)
+    robot.stop()
+    robot.settings(*normal)
+    print_csv("JAM", name, round(-lift.angle()), round(robot.distance() - start),
+              distance, round(top["speed"]), round(top["load"]))
+    return top["load"]
+
+
 async def turn(name, degrees):
     """Turn like robot.turn(degrees) - or, with USE_GYRO on, to the exact
     gyro heading for this turn. Prints the real heading afterwards:
@@ -613,11 +726,17 @@ async def run_after_pattern():
     # back-up, and ended using the RED/WHITE edge on the mat.
     adjust = keep_c2_lined_up(C2_BACK_MM)
     print_csv("C2_FIX", round(adjust))
-    if USE_GYRO and C2_USE_LINE:
+    if USE_GYRO:
+        # Watch for the edge only if C2_USE_LINE is on. Otherwise start the
+        # search past the end of the drive, so it never looks - it just
+        # drives the exact distance, still stopping if it bumps a model.
+        search_from = C2_LINE_SEARCH_FROM
+        if not C2_USE_LINE:
+            search_from = 10000
         await headings.drive_to_color_edge(
             "drive_340", path["target"], "R", Color.RED, Color.WHITE,
-            C2_LINE_SEARCH_FROM, 330, C2_LINE_EXTRA_MM + adjust, 340 + adjust,
-            200, BUMP_TWIST, BUMP_TILT)
+            search_from, 330, C2_LINE_EXTRA_MM + adjust, 340 + adjust,
+            200, C2_DRIVE_MAX_TWIST, BUMP_TILT)
         if headings.last_bumped and C2_SKIP_AFTER_BUMP:
             # It hit a model on the way. From the wrong spot challenge 2
             # would miss anyway, and pushing on is how pieces break off.
@@ -635,14 +754,63 @@ async def run_after_pattern():
     await lift_to_height(C2_ARM_HEIGHT)
     await robot.straight(C2_PUSH_MM)
     await press_forward(C2_PRESS_MM, C2_PRESS_MS, C2_PRESS_SPEED)
+    best_hit = 0   # the hardest any fast push hit the lever
     if C2_JAM:
         # Back up, then drive back in FAST to hit the lever and jam it in,
         # then keep pressing.
         await robot.straight(-C2_JAM_BACK_MM)
-        robot.settings(straight_speed=C2_JAM_SPEED)
-        await robot.straight(C2_JAM_BACK_MM + C2_JAM_EXTRA_MM)
-        robot.settings(straight_speed=200)
+        if C2_JAM_TURN:
+            await headings.turn_to(GYRO_HEADINGS["C2"] + C2_JAM_TURN)
+            headings.check("C2_jam", GYRO_HEADINGS["C2"] + C2_JAM_TURN)
+        best_hit = max(best_hit, await jam_in("jam"))
         await press_forward(C2_PRESS_MM, C2_PRESS_MS, C2_PRESS_SPEED)
+
+    if C2_THIRD_PUSH_RAISE:
+        # Third push: back up while raising the arm a little, then drive in
+        # fast again and keep pressing.
+        print("third push - arm at", C2_ARM_HEIGHT + C2_THIRD_PUSH_RAISE)
+        await multitask(
+            robot.straight(-C2_JAM_BACK_MM),
+            lift_to_height(C2_ARM_HEIGHT + C2_THIRD_PUSH_RAISE),
+        )
+        best_hit = max(best_hit, await jam_in("third"))
+        await press_forward(C2_PRESS_MM, C2_PRESS_MS, C2_PRESS_SPEED)
+
+    # Retry while no fast push has hit the lever.
+    retry = 0
+    while C2_JAM and best_hit < C2_HIT_LOAD and retry < C2_RETRIES:
+        retry += 1
+        print("lever not hit - retry", retry)
+        await multitask(
+            robot.straight(-C2_JAM_BACK_MM),
+            lift_to_height(C2_ARM_HEIGHT),
+        )
+        best_hit = max(best_hit, await jam_in(
+            "retry" + str(retry), C2_JAM_EXTRA_MM + C2_RETRY_EXTRA_MM * retry))
+        await press_forward(C2_PRESS_MM, C2_PRESS_MS, C2_PRESS_SPEED)
+
+    if GO_HOME:
+        await go_home()
+
+
+async def go_home():
+    """Back out of challenge 2, put the arm down, and back into the left
+    home area along the team's route (see HOME_BACK_OUT_MM and below)."""
+    print("going home (left)")
+    # The home turns count from the challenge 2 heading (not from the
+    # jam turn).
+    path["heading"] = GYRO_HEADINGS["C2"]
+    await multitask(
+        robot.straight(-HOME_BACK_OUT_MM),
+        lift_to_height(0, LIFT_FREE_SPEED),
+    )
+    await turn("home_turn1", HOME_TURN_1)
+    await drive("home_back1", -HOME_BACK_1_MM)
+    await turn("home_turn2", HOME_TURN_2)
+    await drive("home_back2", -HOME_BACK_2_MM)
+    position.update()
+    print_csv("POS", "home", one_decimal(position.x), one_decimal(position.y),
+              one_decimal(headings.heading()))
 
 
 async def run_m_with_setup():

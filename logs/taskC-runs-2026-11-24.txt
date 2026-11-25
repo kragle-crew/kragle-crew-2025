@@ -1,0 +1,226 @@
+Searching for not bob...
+init complete
+starting up
+battery voltage 7982mV
+battery current 167mA
+hub info {'program_start_type': 3, 'host_connected_ble': True, 'name': 'not bob', 'reset_reason': 0}
+entering menu loop
+presenting menu
+Starting menu
+menu options: ['A', 'B', 'C', 'D', 'E', 'Ad', 'Bd', 'Cd', 'Dd', 'Ed']
+beginning menu loop
+current menu selection: A
+waiting for button press
+button pressed: {Button.RIGHT}. waiting for release
+buttons released
+navigating 1
+current menu selection: B
+waiting for button press
+button pressed: {Button.RIGHT}. waiting for release
+buttons released
+navigating 1
+current menu selection: C
+waiting for button press
+button pressed: {Button.RIGHT}. waiting for release
+buttons released
+navigating 1
+current menu selection: D
+waiting for button press
+button pressed: {Button.LEFT}. waiting for release
+buttons released
+navigating -1
+current menu selection: C
+waiting for button press
+button pressed: {Button.CENTER}. waiting for release
+buttons released
+C chosen
+selected C. Running function
+battery voltage 7978mV
+START,WHITE,YELLOW,True
+button pressed. stopping lift
+moving to zero
+looking for pattern [Color.GREEN, Color.WHITE]
+seeing color Color.WHITE
+seeing color Color.GREEN
+seeing color Color.WHITE
+pattern found!
+lift at zero
+PATTERN,153,4
+AIM,-77.5,-0.8,-76.8
+CHECK,turn1,-77,-77.5,1
+button pressed. stopping lift
+moving to zero
+lift at zero
+DRIVE,out,-76.8,-76.1,-77.9,-77.5,6.3,115
+LINES,out,R,0:WHITE 163:BLUE 168:GREEN 194:YELLOW 204:WHITE 386:GREEN 401:WHITE 433:GREEN 448:WHITE 457:GREEN 457:WHITE 462:YELLOW 465:RED
+LINES,out,L,0:WHITE 78:BLUE 82:YELLOW 91:GREEN 104:YELLOW 157:GREEN 165:YELLOW 167:RED 196:WHITE 202:GREEN 216:WHITE 228:YELLOW 245:WHITE 281:GREEN 294:WHITE 300:GREEN 304:WHITE 319:GREEN 325:WHITE 351:GREEN 392:YELLOW 406:GREEN 419:WHITE 425:YELLOW 448:GREEN
+AIM,-137.0,-76.2,-137.7
+CHECK,turn2,-138,-137,-1
+lift at the bottom
+AIM,-140.5,-138.0,-140.7
+CHECK,turn3,-141,-140.5,0
+CAREFUL,C1_in,37,35,0.8,49,0.5
+CHECK,C1_arrive,-139,-140.5,1
+AIM,-145.5,-139.2,-145.2
+CHECK,C1_dip,-145,-145.5,0
+AIM,-155.0,-145.2,-154.4
+CHECK,C1,-154,-155,1
+lifting to height: 2200
+AIM,-165.0,-151.2,-164.4
+CHECK,turn5,-164,-165,1
+lifting to height: 900
+DRIVE,back_C1,-164.5,-163.5,-165.3,-165.0,1.6,98
+LINES,back_C1,R,0:BLUE 30:WHITE 40:BLUE 55:WHITE 91:BLUE 98:WHITE 102:RED 121:WHITE 126:BLUE 136:WHITE
+LINES,back_C1,L,0:BLUE 12:WHITE 34:YELLOW 39:WHITE 61:YELLOW 65:WHITE 72:YELLOW 89:WHITE 104:GREEN
+POS,after_C1,-535.2,134.8,-163.5
+GOTO,to_levers,-535.2,134.8,-447,172,-113.0,-96
+lifting to height: 600
+AIM,-113.0,-163.5,-113.6
+CAREFUL,to_levers,96,96.11972,1.3,54,2.0
+POS,to_levers,-447.5,174.0,-119.4
+AIM,-71.0,-119.5,-70.9
+CHECK,C3_lever,-71,-71,0
+LINES,C3_approach,R,0:GREEN 35:WHITE 74:GREEN 80:BLUE 111:WHITE 116:BLUE 117:WHITE
+LINES,C3_approach,L,0:WHITE 0:BLUE 1:WHITE 2:BLUE 35:WHITE 41:GREEN 63:WHITE 115:RED
+lifting to height: 1500
+lifting to height: 1100
+AIM,-59.0,-70.2,-59.5
+CHECK,C4_push1,-59,-59,0
+lifting to height: 50
+C4FEEL,1,10,-64,True,True
+felt the lever - no more pushes needed
+GOTO,drive_300,-522.0,184.4,-819,81,-109.3,314
+lifting to height: 900
+AIM,-109.3,-56.3,-109.6
+DRIVE,drive_300,-109.6,-110.1,-109.4,-109.3,2.1,123
+LINES,drive_300,R,0:WHITE 8:YELLOW 10:GREEN 19:BLUE 35:WHITE 103:GREEN 111:WHITE 190:GREEN 208:WHITE 233:GREEN 237:YELLOW 289:WHITE
+LINES,drive_300,L,0:BLUE 1:WHITE 10:BLUE 32:WHITE 46:YELLOW 49:GREEN 70:YELLOW 106:GREEN 110:WHITE 131:GREEN 146:YELLOW 155:GREEN 184:WHITE 210:GREEN 217:YELLOW 223:GREEN 227:BLUE 229:WHITE 258:GREEN 315:WHITE
+POS,drive_300,-820.2,79.7,-110.1
+GOTO,drive_150,-820.2,79.7,-964,120,-74.5,149
+AIM,-74.5,-110.1,-74.8
+DRIVE,drive_150,-74.8,-75.4,-73.4,-74.5,3.1,69
+LINES,drive_150,R,0:GREEN 1:YELLOW 10:GREEN 19:WHITE 97:GREEN 110:BLUE 128:WHITE 135:BLUE 146:WHITE
+LINES,drive_150,L,0:GREEN 19:BLUE 60:WHITE 64:BLUE 68:WHITE 76:BLUE 115:WHITE 144:GREEN
+POS,drive_150,-966.0,118.8,-75.4
+AIM,-10.0,-75.4,-10.9
+CHECK,turn8,-11,-10,-1
+C2_FIX,-22
+EDGE,drive_340,-1,124,3.9,140,1.5,True
+bumped a model on the way to challenge 2 - stopping here
+completed C
+presenting menu
+Starting menu
+menu options: ['A', 'B', 'C', 'D', 'E', 'Ad', 'Bd', 'Cd', 'Dd', 'Ed']
+beginning menu loop
+current menu selection: C
+waiting for button press
+button pressed: {Button.CENTER}. waiting for release
+buttons released
+C chosen
+selected C. Running function
+battery voltage 7969mV
+START,WHITE,YELLOW,True
+button pressed. stopping lift
+moving to zero
+looking for pattern [Color.GREEN, Color.WHITE]
+seeing color Color.WHITE
+seeing color Color.GREEN
+seeing color Color.WHITE
+pattern found!
+lift at zero
+PATTERN,152,5
+AIM,-77.5,-2.3,-77.3
+CHECK,turn1,-77,-77.5,0
+button pressed. stopping lift
+moving to zero
+lift at zero
+DRIVE,out,-77.3,-76.8,-77.6,-77.5,3.5,127
+LINES,out,R,0:WHITE 161:BLUE 166:GREEN 190:YELLOW 200:WHITE 382:YELLOW 387:GREEN 399:WHITE 435:GREEN 444:WHITE 460:YELLOW
+LINES,out,L,0:WHITE 73:BLUE 79:YELLOW 87:GREEN 104:YELLOW 156:GREEN 161:YELLOW 163:RED 194:WHITE 228:YELLOW 245:WHITE 281:GREEN 293:WHITE 320:GREEN 324:WHITE 353:GREEN 394:YELLOW 406:GREEN 421:WHITE 426:YELLOW 446:GREEN 467:WHITE
+AIM,-137.0,-76.8,-137.9
+CHECK,turn2,-138,-137,-1
+lift at the bottom
+AIM,-140.5,-138.2,-141.2
+CHECK,turn3,-141,-140.5,-1
+CAREFUL,C1_in,37,35,0.3,49,0.3
+CHECK,C1_arrive,-140,-140.5,1
+AIM,-145.5,-139.9,-145.5
+CHECK,C1_dip,-145,-145.5,0
+AIM,-155.0,-145.5,-154.8
+CHECK,C1,-155,-155,0
+lifting to height: 2200
+AIM,-165.0,-153.0,-164.6
+CHECK,turn5,-165,-165,0
+lifting to height: 900
+DRIVE,back_C1,-164.6,-164.6,-165.1,-165.0,1.3,108
+LINES,back_C1,R,0:BLUE 20:WHITE 31:BLUE 56:WHITE 94:BLUE 101:WHITE 105:RED 123:WHITE 128:BLUE 139:WHITE
+LINES,back_C1,L,0:BLUE 15:WHITE 38:YELLOW 40:WHITE 65:YELLOW 69:WHITE 74:YELLOW 94:WHITE 108:GREEN 127:WHITE 131:GREEN 150:YELLOW 164:GREEN
+POS,after_C1,-529.8,140.5,-164.6
+GOTO,to_levers,-529.8,140.5,-447,172,-111.0,-89
+lifting to height: 600
+AIM,-111.0,-164.6,-111.8
+CAREFUL,to_levers,91,89.03231,1.7,43,1.4
+POS,to_levers,-445.6,170.9,-110.8
+AIM,-71.0,-110.8,-71.9
+CHECK,C3_lever,-72,-71,-1
+LINES,C3_approach,R,0:WHITE 4:GREEN 46:WHITE 87:GREEN 95:BLUE 97:GREEN 114:BLUE 133:WHITE
+LINES,C3_approach,L,0:BLUE 10:WHITE 32:BLUE 39:WHITE 48:GREEN 56:YELLOW 71:GREEN 73:WHITE 90:GREEN 97:WHITE 130:RED
+lifting to height: 1500
+lifting to height: 1100
+AIM,-59.0,-70.5,-59.2
+CHECK,C4_push1,-59,-59,0
+lifting to height: 50
+C4FEEL,1,7,-69,True,True
+felt the lever - no more pushes needed
+GOTO,drive_300,-519.0,184.8,-819,81,-109.1,317
+lifting to height: 900
+AIM,-109.1,-58.1,-108.6
+DRIVE,drive_300,-108.6,-107.5,-109.0,-109.1,1.7,124
+LINES,drive_300,R,0:WHITE 19:GREEN 39:BLUE 47:WHITE 99:YELLOW 102:GREEN 121:WHITE 190:GREEN 218:WHITE 237:YELLOW 250:GREEN 260:YELLOW 282:WHITE
+LINES,drive_300,L,0:RED 5:WHITE 11:BLUE 33:WHITE 46:YELLOW 52:GREEN 78:YELLOW 110:GREEN 112:WHITE 128:GREEN 130:WHITE 133:GREEN 194:WHITE 220:GREEN 227:YELLOW 231:GREEN 235:BLUE 238:WHITE 270:GREEN
+POS,drive_300,-814.5,79.2,-107.6
+GOTO,drive_150,-814.5,79.2,-964,120,-74.8,154
+AIM,-74.8,-107.6,-74.5
+DRIVE,drive_150,-74.5,-75.8,-73.9,-74.8,3.0,61
+LINES,drive_150,R,0:WHITE 5:GREEN 14:YELLOW 16:GREEN 17:YELLOW 26:GREEN 33:WHITE 100:GREEN 109:BLUE 128:WHITE 133:BLUE
+LINES,drive_150,L,0:GREEN 19:BLUE 42:WHITE 58:BLUE 69:WHITE 80:BLUE 117:WHITE 150:GREEN
+POS,drive_150,-970.5,118.0,-75.8
+AIM,-10.0,-75.8,-9.7
+CHECK,turn8,-10,-10,0
+C2_FIX,-22
+EDGE,drive_340,-1,119,3.4,149,1.3,True
+bumped a model on the way to challenge 2 - stopping here
+completed C
+presenting menu
+Starting menu
+menu options: ['A', 'B', 'C', 'D', 'E', 'Ad', 'Bd', 'Cd', 'Dd', 'Ed']
+beginning menu loop
+current menu selection: C
+waiting for button press
+button pressed: {Button.CENTER}. waiting for release
+buttons released
+C chosen
+selected C. Running function
+battery voltage 7956mV
+START,WHITE,YELLOW,True
+button pressed. stopping lift
+moving to zero
+looking for pattern [Color.GREEN, Color.WHITE]
+seeing color Color.WHITE
+seeing color Color.GREEN
+seeing color Color.WHITE
+pattern found!
+Run stopped with a button
+completed C
+presenting menu
+Starting menu
+menu options: ['A', 'B', 'C', 'D', 'E', 'Ad', 'Bd', 'Cd', 'Dd', 'Ed']
+beginning menu loop
+current menu selection: C
+waiting for button press
+button pressed: {Button.CENTER}. waiting for release
+buttons released
+C chosen
+selected C. Running function
+battery voltage 7952mV
+The program was stopped (SystemExit).

@@ -472,12 +472,13 @@ class Position:
             await wait(10)
 
     async def go_to(self, name, x, y, next_heading=None, careful=False,
-                    speed=200, max_twist=3, max_tilt=3.5):
+                    speed=200, max_twist=3, max_tilt=3.5, careful_speed=100):
         """Turns toward (x, y) and drives there in a straight line.
 
         It drives forward or backward, whichever needs less turning -
         counting the turn to next_heading afterwards too, if given.
-        careful=True drives slowly and stops on a bump (drive_until_bump).
+        careful=True stops on a bump (drive_until_bump), at careful_speed
+        (slow, 100 mm/s, unless you ask for more).
         Prints:  GOTO,<name>,<x now>,<y now>,<x to>,<y to>,<heading>,<mm>
                  POS,<name>,<x after>,<y after>,<heading after>"""
         self.update()
@@ -505,7 +506,8 @@ class Position:
             await self.headings.turn_to(heading)
             if careful:
                 await self.headings.drive_until_bump(name, heading, distance,
-                                                     max_twist, 100, max_tilt)
+                                                     max_twist, careful_speed,
+                                                     max_tilt)
             else:
                 await self.headings.drive_on_heading(name, heading, distance,
                                                      speed)
