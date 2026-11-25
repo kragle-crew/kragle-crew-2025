@@ -3,18 +3,20 @@ from tasks.taskA import task as a
 from tasks.taskB import task as b
 from tasks.taskC import task as c
 from tasks.taskD import task as d
-from tasks.diagnostic import record_a, record_b, record_c, record_d
+from tasks.taskE import task as e
+from tasks.diagnostic import record_a, record_b, record_c, record_d, record_e
 
 from pybricks.tools import wait, StopWatch
 from pybricks.parameters import Button
 
-# A, B, C, D = the four runs.
-# Ad, Bd, Cd, Dd = the same runs with the diagnostic recorder (logs the
+# A, B, C, D, E = the runs (E = lifting the tree).
+# Ad, Bd, Cd, Dd, Ed = the same runs with the diagnostic recorder (logs the
 # sensors). The hub can only show one letter, so a "d" option shows its
 # letter BLINKING.
-menu_options = {"A": a, "B": b, "C": c, "D": d,
-                "Ad": record_a, "Bd": record_b, "Cd": record_c, "Dd": record_d}
-menu_option_keys = ["A", "B", "C", "D", "Ad", "Bd", "Cd", "Dd"]
+menu_options = {"A": a, "B": b, "C": c, "D": d, "E": e,
+                "Ad": record_a, "Bd": record_b, "Cd": record_c, "Dd": record_d,
+                "Ed": record_e}
+menu_option_keys = ["A", "B", "C", "D", "E", "Ad", "Bd", "Cd", "Dd", "Ed"]
 
 BLINK_MS = 300   # how fast a "d" option blinks
 
@@ -24,7 +26,8 @@ def menu(starting_selection="A"):
 
     def navigate(direction, old_index):
         print(f"navigating {direction}")
-        return (old_index - direction) % len(menu_option_keys)
+        # RIGHT (+1) goes to the next option, LEFT (-1) to the one before.
+        return (old_index + direction) % len(menu_option_keys)
 
     print("Starting menu")
     print(f"menu options: {menu_option_keys}")

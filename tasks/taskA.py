@@ -31,14 +31,14 @@
 #     instead of doing a full lift reset in the middle of the run.
 #   * Prints CHECK / AIM / LINES / HOOK lines so the logs show what happened.
 
-from init import robot, left_motor, right_motor, colorRight
+from init import hub, robot, lift, left_motor, right_motor, colorRight
 from utilities.lift import reset_lift, lift_to_height
 from utilities.readings import get
 from utilities.run_helpers import (print_csv, wait_for_gyro,
                                    check_start_position, HeadingChecker,
-                                   straight_and_watch)
+                                   straight_and_watch, one_decimal)
 from utilities.circular_buffer import CircularBuffer
-from pybricks.tools import multitask, wait
+from pybricks.tools import multitask, wait, StopWatch
 from pybricks.parameters import Color
 
 
@@ -76,10 +76,12 @@ C1_DRIVE_HEADING = -10.5  # the long 580 mm drive. In the 4-for-4 batch the
 C1_HEADING = 0           # facing the model when the fork lifts
 # How high the fork lifts before the robot backs up to pull. Was 750 - the
 # robot pulled the model (the motors felt it) but the lever didn't actuate,
-# so lift higher first.
-#   Still doesn't actuate?            bigger (by about 100).
+# so lift higher first. Then 1050 - in 2 of 3 runs (taskA-runs-2) it didn't
+# fully pull the lever: too high. 950 didn't work either (taskA-runs-3), so
+# back to 750.
+#   Still doesn't actuate?            bigger (by about 50).
 #   Fork lifts the model too far?     smaller.
-C1_LIFT_HEIGHT = 1050
+C1_LIFT_HEIGHT = 750
 # Motor load while backing up that means "we pulled the model".
 # All runs so far: pulled = 95 to 165, missed = 41 to 67.
 HOOK_LOAD = 75
@@ -89,15 +91,27 @@ HOOK_LOAD = 75
 #   [2, -2] = 1st retry a little RIGHT, 2nd retry a little LEFT.
 #   []      = never retry.          Each retry adds about 4 seconds.
 RETRY_AIM = [2, -2]
+# Letting go of the model after the pull: if the robot tilts more than this
+# many degrees while the fork comes down, the fork is landing ON the model -
+# the hook missed. Good runs stay under 1; the run that tipped hit 8.5.
+C1_LOWER_MAX_TILT = 3
 
 # --- Challenge 2: the slow push ---
-C2_DRIVE_HEADING = -88   # the 300 mm drive toward challenge 2. The robot
-                         # really averaged about -88 in the 4-for-4 batch.
-C2_HEADING = 46       # worked at 45 to 47. (Task A's turns add up to 56 -
-                      # that is too far right.)
+# The 300 mm drive toward challenge 2. Was -88: in 3 of 6 runs (taskA-runs-1)
+# the robot's right side caught the leaf cutter ant model about 180 mm into
+# this drive, got twisted 30 degrees and wheel-spun - then challenge 2 and 3
+# were off. -91 passes about 9 mm further from it.
+#   Still catching the ant model?  -92 (more left).
+C2_DRIVE_HEADING = -91
+# Was 46. In the failed pushes the robot's LEFT side dragged along the lever
+# arm the whole push. The drive change above already moves the push about
+# 11 mm to the right; this turns it 1 degree more right too.
+# (Task A's turns add up to 56 - that is too far right.)
+C2_HEADING = 47
 C2_ARM_HEIGHT = 40    # raise the fork this much so the arm doesn't slide
                       # under the lever. 0 = don't raise.
-C2_PUSH_MM = 400
+# Was 400. The drive change above starts the push about 11 mm further back.
+C2_PUSH_MM = 410
 # The arm meets the lever about 70 mm in and pushes it the rest of the way,
 # so this is slow on purpose. Trying 150 would save about 1.3 seconds - but
 # test it on its own, it could change how the lever moves.
@@ -186,6 +200,49 @@ async def back_up_and_check_hook(attempt):
     return hooked
 
 
+async def lower_fork_carefully():
+    """Lower the fork to 0 (letting go of the model), but STOP straight away
+    if the fork lands on something. Returns True if it got all the way down.
+
+    This is how we really know the hook missed. When the peg lines up with
+    the lever, the pull back feels just as heavy as a real hook (runs 3 and
+    6 in taskA-runs-4), but then the fork comes down ON the model:
+      - it tilts the robot (run 3: 8.5 degrees, then it tipped over), or
+      - it gets stuck part way down (run 6: stopped a third of the way).
+    On a real hook the fork drops straight down and the robot stays flat.
+    Prints:  C1_LOWER,<height it got to>,<worst tilt change>,<all the way?>"""
+    start_tilt = max(abs(t) for t in hub.imu.tilt())
+    found = {"tilt": 0, "stuck": False}
+
+    async def watch():
+        timer = StopWatch()
+        still_ms = 0
+        while True:
+            await wait(10)
+            tilt = max(abs(t) for t in hub.imu.tilt()) - start_tilt
+            found["tilt"] = max(found["tilt"], tilt)
+            if tilt > C1_LOWER_MAX_TILT:
+                return
+            # Not moving, but not down yet = resting on something.
+            height = -lift.angle()
+            if timer.time() > 300 and height > 100 and abs(lift.speed()) < 50:
+                still_ms += 10
+                if still_ms >= 150:
+                    found["stuck"] = True
+                    return
+            else:
+                still_ms = 0
+
+    # race=True: stop lowering as soon as the watcher sees a problem.
+    await multitask(lift_to_height(0), watch(), race=True)
+    lift.hold()
+    height = -lift.angle()
+    all_the_way = height < 50 and found["tilt"] <= C1_LOWER_MAX_TILT
+    print_csv("C1_LOWER", round(height), one_decimal(found["tilt"]),
+              all_the_way)
+    return all_the_way
+
+
 # ---------------- The run ----------------
 
 async def do_hook():
@@ -196,32 +253,41 @@ async def do_hook():
     await headings.turn_to(C1_HEADING)
     headings.check("C1_hook", C1_HEADING)
 
-    # Lift the fork into the model, then back up to pull it.
-    await lift_to_height(C1_LIFT_HEIGHT)
-    hooked = await back_up_and_check_hook(1)
+    # First try straight on, then the retries in RETRY_AIM.
+    aims = [0] + RETRY_AIM
+    done = False
+    for attempt in range(1, len(aims) + 1):
+        aim = aims[attempt - 1]
+        if attempt > 1:
+            # Missed. We are backed up, well away from the model, so it is
+            # safe to lower the fork here. Then aim a tiny bit to one side,
+            # drive back in, and try again.
+            print("missed the hook - trying again, aiming", aim, "degrees")
+            await lift_to_height(0, LIFT_FREE_SPEED)
+            await headings.turn_to(C1_HEADING + aim)
+            await robot.straight(100)
 
-    # If we missed: fork down, aim a tiny bit to one side, drive back in, and
-    # try again.
-    attempt = 1
-    for aim in RETRY_AIM:
-        if hooked:
-            break
-        attempt += 1
-        print("missed the hook - trying again, aiming", aim, "degrees")
-        await lift_to_height(0, LIFT_FREE_SPEED)
-        await headings.turn_to(C1_HEADING + aim)
-        await robot.straight(100)
+        # Lift the fork into the model, then back up to pull it.
         await lift_to_height(C1_LIFT_HEIGHT)
-        hooked = await back_up_and_check_hook(attempt)
+        if not await back_up_and_check_hook(attempt):
+            continue   # the motors didn't feel the model - try again
 
-    if hooked:
-        # Same as Task A: drive back in, then let go. (Normal lift speed -
-        # the fork is still holding the model here.)
+        # Same as Task A: drive back in, then let go - but watch the fork
+        # come down, because a miss can still feel heavy on the pull.
         await robot.straight(100)
-        await lift_to_height(0)
-    else:
-        # Still missed. Lower the fork FIRST - driving forward with the fork
-        # up can ride it up onto the model and tip the robot over.
+        if await lower_fork_carefully():
+            done = True
+            break
+        # The fork landed on the model, so the hook really missed. Lift it
+        # back off the model and REVERSE before lowering it, then retry.
+        print("fork landed on the model - the hook missed")
+        await lift_to_height(C1_LIFT_HEIGHT)
+        await robot.straight(-100)
+
+    if not done:
+        # Still missed. We are backed up with the fork up. Lower the fork
+        # FIRST - driving forward with the fork up can ride it up onto the
+        # model and tip the robot over.
         print("never hooked - lowering the fork before moving on")
         await lift_to_height(0, LIFT_FREE_SPEED)
         await robot.straight(100)

@@ -1,5 +1,5 @@
-# Diagnostic recorder: menu Ad, Bd, Cd and Dd run Task A, B, C or D with
-# the recorder (see record_a ... record_d at the bottom).
+# Diagnostic recorder: menu Ad, Bd, Cd, Dd and Ed run Task A, B, C, D or E
+# with the recorder (see record_a ... record_e at the bottom).
 #
 # This runs the task exactly like normal, and at the same time records what
 # the gyro, the motors, and both color sensors see. The task is NOT changed.
@@ -34,6 +34,7 @@ from tasks.taskA import task as task_a
 from tasks.taskB import task as task_b
 from tasks.taskC import task as task_c
 from tasks.taskD import task as task_d
+from tasks.taskE import task as task_e
 
 # The left color sensor is commented out in init.py right now.
 # If init.py makes it, use that one. Otherwise try to make it here.
@@ -444,6 +445,11 @@ async def record_c():
 async def record_d():
     """Menu Dd: Task D with the recorder."""
     await diagnose(task_d, "D")
+
+
+async def record_e():
+    """Menu Ed: Task E with the recorder."""
+    await diagnose(task_e, "E")
 
 
 async def diagnose(task_function, task_name):
